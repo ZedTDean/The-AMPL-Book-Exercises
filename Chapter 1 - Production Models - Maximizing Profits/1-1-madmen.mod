@@ -5,11 +5,12 @@ param dollars >= 0; # dollars in the campaign budget
 param reach 		{ADUNITS} > 0;  # audience reached per ad unit (in millions)
 param cost 			{ADUNITS};      # cost per ad unit
 param min_buy 		{ADUNITS} >= 0; # min order qty per ad unit
+param max_buy 		{ADUNITS} >= 0; # max order qty per ad unit
 param person_weeks 	{ADUNITS};      # person-weeks needed to make each ad unit
 param talent_time >= 0; # campaign's total talent_time in person_weeks
 
 
-var Buy {p in ADUNITS} >= min_buy[p]; # ad units bought
+var Buy {p in ADUNITS} >= min_buy[p], <= max_buy[p]; # ad units bought
 
 
 maximize Total_Reach: sum {p in ADUNITS} reach[p] * Buy[p];
