@@ -1,0 +1,7 @@
+set ADUNITS := tv_mins mag_pages;
+
+param: 			reach 	cost	min_buy	:=
+	tv_mins		1.8		20000	10	
+	mag_pages	1		10000	0 ;
+
+	param dollars := 1000000;
