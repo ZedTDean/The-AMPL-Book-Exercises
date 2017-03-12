@@ -14,6 +14,6 @@ maximize Total_Profit: sum {p in PROD} profit[p] * Make[p];
 # Objective: total profits from all products
 
 subject to Time {s in STAGE}:
-sum {p in PROD} (1/rate[p,s]) * Make[p] <= avail[s];
+sum {p in PROD} (1/rate[p,s]) * Make[p] = avail[s];
 # In each stage: total of hours used by all
-# products may not exceed hours available
+# products must equal hours available at mill
