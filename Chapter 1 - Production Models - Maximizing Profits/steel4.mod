@@ -3,6 +3,7 @@ set STAGE; # stages
 
 param rate {PROD,STAGE} > 0; # tons per hour in each stage
 param avail {STAGE} >= 0; # hours available/week in each stage
+param max_weight >= 0; # max weight of total production run
 
 param profit {PROD}; # profit per ton
 param commit {PROD} >= 0; # lower limit on tons sold in week
@@ -17,3 +18,7 @@ subject to Time {s in STAGE}:
 sum {p in PROD} (1/rate[p,s]) * Make[p] <= avail[s];
 # In each stage: total of hours used by all
 # products may not exceed hours available
+
+subject to Weight: sum {p in PROD} Make[p] <= max_weight;
+# The combined weight of products produced 
+# must not excede the max_weight" parameter 
