@@ -10,8 +10,8 @@ param market {PROD} >= 0; # upper limit on tons sold in week
 
 var Make {p in PROD} >= commit[p], <= market[p]; # tons produced
 
-maximize Total_Profit: sum {p in PROD} profit[p] * Make[p];
-# Objective: total profits from all products
+maximize Total_Tons: sum {p in PROD} Make[p];
+# Objective: total tons from all products
 
 subject to Time {s in STAGE}:
 sum {p in PROD} (1/rate[p,s]) * Make[p] <= avail[s];
