@@ -13,6 +13,8 @@ many AMPL users have when first exposed to mathematical optimization and
 AMPL, more often than not during a university course on the subject.
 
 
+
+
 The AMPL Book
 =============
 
@@ -25,6 +27,8 @@ or experienced users", as per the book's webpage at:
 The book is available for download at the link above, along with all the 
 models, data and scripts that comprise the in-chapter examples (but not 
 the end-of-chapter exercises).
+
+
 
 
 About AMPL - A Modeling Language for Mathematical Programming
@@ -52,6 +56,7 @@ More at AMPL at AMPL the Optimization, Inc. website at:
 
 
 
+
 DISCLAIMERS
 ===========
 
@@ -69,6 +74,23 @@ find interesting beyond the intended scope of the exercises, or include
 new work for the sake of experimentation.
 
 
+
+
+About Branching & Notes
+=======================
+
+Where the book requires (or I experiment with) varied iterations on the 
+same model, data, etc, I branch the code off into new branches named after 
+the Chapter and Exercise. 
+
+However, for ease of access to my notes, I maintain one note file per 
+chapter titled 'CHAPTER NOTES.md' which lives in the master branch. This 
+way, reading my notes on sequential problem iterations can be done without 
+needing to flip between code branches.
+
+
+
+
 Getting AMPL, the IDE and Solvers
 =================================
 
@@ -76,6 +98,8 @@ A working demo of AMPL complete with IDE and demo licenses of a number of
 popular solvers is available at:
 
 	http://ampl.com/try-ampl/download-a-free-demo/
+
+
 
 
 Contact Me
@@ -86,4 +110,3 @@ Feel free:
 	martin@ampl.com
 
 	Martin Laskowski
-
