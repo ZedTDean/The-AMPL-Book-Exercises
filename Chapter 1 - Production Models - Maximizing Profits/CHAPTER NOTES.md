@@ -226,3 +226,19 @@ optimal solution is reached ...
 
 ... but it ignores lower bounds completely because our 'Share' constraint 
 is broken. :)
+
+
+
+
+Exercise 1-2 (e)
+================
+
+The changes to the data file are straightforward: I added the stage 
+'finish' and its related values to the set 'STAGE', to the table for the
+values of parameter 'rate', and also to parameter 'avail'.
+
+For the 'rate' table values, I had to do a little digging to find the 
+appropriate way to communicate non-existent upper-bounds for both bands 
+and coils, and in the AMPL Book's Appendix A found the answer on page 466, 
+point A.7.2, which discusses Infinity.
+
