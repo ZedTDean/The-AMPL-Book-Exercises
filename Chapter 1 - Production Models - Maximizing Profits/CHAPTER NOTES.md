@@ -423,3 +423,124 @@ prioritized by the solver. In our scenario, for the last five hours of the
 production run, this is plate.
 
 
+
+
+//
+/    (c) Use AMPL to verify the following statements: If the available 
+/    reheat time is increased from 35 to 36 in the data of Figure 1-6b, 
+/    then the profit goes up by $1800 as predicted in Section 1.6. 
+//
+
+Correct:
+
+Before ( avail["reheat"] = 35 ) ...
+
+  ampl: solve;
+  MINOS 5.51: optimal solution found.
+  3 iterations, objective 188166.6667
+
+After ( avail["reheat"] = 36 ) ...
+  
+  ampl: solve;
+  MINOS 5.51: optimal solution found.
+  3 iterations, objective 189966.6667
+
+... difference is 1800.
+
+
+//
+/    If the reheat time is further increased to 37, the profit goes up by 
+/    another $1800. However, if the reheat time is increased to 38, there 
+/    is a smaller increase in the profit, and further increases past 38 
+/    have no effect on the optimal profit at all. To change the reheat 
+/    time to, say, 26 without changing and reading the data file over 
+/    again, type the command 
+/    
+/      let avail["reheat"] := 36;
+//
+
+Yup, this works.
+
+
+//
+/    By trying some other values of the reheat time, confirm that the 
+/    profit increases by $1800 per extra hour for any number of hours 
+/    between 35 and 37-9/14, but that any increase in the reheat time
+/    beyond 37-9/14 hours doesn’t give any further profit.
+//
+
+This is true
+
+
+//
+/    Draw a plot of the profit versus the number of reheat hours 
+/    available, for hours ≥ 35.
+//
+
+192066.6667           .  .  .  .
+191766.6667        .
+189966.6667     .
+188166.6667  .
+^Profit
+             35 36 37 38 39 40 41   <- reheat hours avail
+
+
+
+
+//
+/    (d) To find the slope of the plot from (c) — profit versus reheat 
+/    time available — at any particular reheat time value, you need only 
+/    look at the marginal value of Time["reheat"]. Using this observation 
+/    as an aid, extend your plot from (c) down to 25 hours of reheat time. 
+/    Verify that the slope of the plot remains at $6000 per hour from 25 
+/    hours down to less than 12 hours of reheat time. 
+//
+
+This is correct:
+
+ 144250                                         .
+ 138250                                      .
+ 132250                                   .
+ 126250                                .
+ 120250                             .
+ 114250                          .
+ 108250                       .
+ 102250                    .
+  96250                 .
+  90250              .
+  84250           .
+  78250        .
+  72250     .
+  66250  .
+^Profit
+         12 13 14 15 16 17 18 19 20 21 22 23 24 25   <- reheat hours avail
+
+
+//
+/    Explain what happens when the available reheat time drops to 11 
+/    hours.
+//
+
+Let's do it ...
+
+  ampl: let avail["reheat"] := 11;
+  ampl: solve;
+  presolve: constraint Time['reheat'] cannot hold:
+  body <= 11 cannot be >= 11.25; difference = -0.25
+
+So .. the number 11.25 is significant, and the model won't solve if 
+
+  avail["reheat"]  is less than 11.25
+
+... and this because our lower bounds on our products' production are 
+1000, 500 and 750 tons respectively, or 2250 tons in aggregate, and this 
+total of 2250 would need at least 11.25 hours of reheat time to make.
+
+So in essence AMPL is telling us that we are messing up our ability to
+deliver our aggregate 'commit' on all products but dialing down the reheat
+hours to below 11.25. Smart!
+
+
+
+
+//  
