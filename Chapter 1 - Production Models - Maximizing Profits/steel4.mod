@@ -17,3 +17,6 @@ subject to Time {s in STAGE}:
 sum {p in PROD} (1/rate[p,s]) * Make[p] <= avail[s];
 # In each stage: total of hours used by all
 # products may not exceed hours available
+
+subject to Share {p in PROD}:
+Make[p] >= min_share[p] * (sum {k in PROD} Make[k] );
