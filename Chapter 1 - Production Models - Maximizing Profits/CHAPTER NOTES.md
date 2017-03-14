@@ -358,4 +358,68 @@ one more hour to 'avail' then it would be worth another $4640.
 Displaying Make.rc gives us the dollar impact on the total profit for each 
 unit of bands, coils and plate respectively.
 
-   
+
+
+//
+/    (b) Explain why the reheat time constraints added in Figure 1-6a 
+/    result in a higher production of plate and a lower production of 
+/    bands.
+//
+
+Before adding the reheat stage our Make values were ...
+
+ampl: display Make;
+Make [*] :=
+bands  6000
+coils   500
+plate  1028.57
+;
+
+... and now with the reheat stage added they are ...
+
+ampl: display Make
+ampl? ;
+Make [*] :=
+bands  3833.33
+coils   500
+plate  2666.67
+;
+
+... and this is because the reduced costs (aka '.rc') for each product 
+have changed from ...
+
+ampl: display Make.rc;
+Make.rc [*] :=
+bands   1.8
+coils  -3.14286
+plate   0
+;
+
+... to...
+
+ampl: display Make.rc
+ampl? ;
+Make.rc [*] :=
+bands   1.77636e-15   <-- effectively zero
+coils  -5.66667
+plate   0
+;
+
+Adding the reheat stage caused a theoretical increase in the 'commit' for 
+bands to impact the 'Total_Profit' objective negatively instead of 
+positively as before. But why?
+
+(This is a wordy answer, please suggest shorter / better) ...
+
+Because the reheat stage runs for only 35 hours while the roll stage runs 
+for 40, there are 5 hours in the production run when no more material can 
+be reheated in stage one, ready for use in stage two. During these 5 
+hours, the scarcest commodity is no longer time but is now the supply of 
+reheated material itself. 
+
+Rolling time still matters, but to some point, the product with the best 
+ratio of profitability PER TON OF READY MATERIAL and rolling time will be 
+prioritized by the solver. In our scenario, for the last five hours of the
+production run, this is plate.
+
+
