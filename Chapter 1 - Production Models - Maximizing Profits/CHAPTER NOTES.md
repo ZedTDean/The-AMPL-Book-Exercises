@@ -130,3 +130,99 @@ two things:
   we also have 5 more hours available in the second 'roll' stage than in 
   the reheat stage, and these extra 5 hours absorb the lower roll rate of 
   the plate completely, without affecting the 7000 total tons number.
+
+
+
+
+Exercise 1-2 (d)
+================
+
+The easy part is updating the parameter 'commit' to 'min_share' in the 
+model and data files, along with its values per product in the data file, 
+which I've made fractions representing percentages of a whole = 1.
+
+Next, scribble out ways to convert the constraint shown in algorithmic 
+notation in the exercise's description in the book, into to the AMPL 
+model.
+
+The key is understanding what the constraint does - basically, for each 
+product, it sets the 'min_share' parameter multiplied by the sum of all 
+products made, as the minimum bound on tons to make of that product.
+
+I eliminate the 'min_share' argument in the 'Make' variable's declaration 
+(where the old 'commit' argument was) because we address everything in the 
+constraint as follows: 
+
+  subject to Share {p in PROD}:
+  Make[p] >= min_share[p] * (sum {k in PROD} Make[k] );
+
+
+"If the minimum shares are 0.4 for bands and plate, and 0.1 for coils, 
+what is the solution?" - it is ...
+
+  ampl: solve;
+  MINOS 5.51: optimal solution found.
+  4 iterations, objective 185828.5714
+
+  ampl: display Make;
+  Make [*] :=
+  bands  3428.57       
+  coils   685.714      
+  plate  2742.86
+  ;
+
+  ampl: display Share;
+  Share [*] :=
+  bands   -5.43896e-15   <-- effectively zero
+  coils  -10.4857
+  plate   -1.80714
+  ;
+
+
+"Verify that if you change minimum shares to 0.5 for bands and plate, and 
+0.1 for coils, the linear program gives an optimal solution that produces 
+nothing, at zero profit." - Yes, that's correct ...
+
+  ampl: solve;
+  MINOS 5.51: optimal solution found.
+  2 iterations, objective 5.193605824e-24   <-- effectively zero
+
+  ampl: display Make;
+  Make [*] :=
+  bands  1.11931e-25   <-- effectively zero
+  coils  1.49242e-26   <-- effectively zero
+  plate  6.71587e-26   <-- effectively zero
+  ;
+
+  ampl: display Share;
+  Share [*] :=
+  bands  -275
+  coils  -270
+  plate  -271
+  ;
+
+
+"Explain why this makes sense." - OK. We get a no-production, zero-profit 
+result when our aggregate 'min_share' values add up to over 1 because then 
+the 'Make[k]' argument in the Share constraint is higher than the possible 
+total tons produceable (or Make[p]) for any k in {PROD}. This then makes 
+the 'Share' constraint un-satisfiable because it begins with ...
+
+  'Make[p] >= ...'
+
+To test this, just throw the operand '>=' around to a '<=' to see that an 
+optimal solution is reached ...
+
+  ampl: solve;
+  MINOS 5.51: optimal solution found.
+  3 iterations, objective 189937.5
+
+  ampl: display Make;
+  Make [*] :=
+  bands  3312.5
+  coils   187.5
+  plate  3500
+  ;
+
+... but it ignores lower bounds completely because our 'Share' constraint 
+is broken. :)
