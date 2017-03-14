@@ -351,4 +351,11 @@ Exercise 1-3
 /    in Section 1.6.)
 //
 
+Displaying 'Time' shows us a value of 4640, indicating that each hour 
+on the production creates $4640 of profit, put another way, if we added 
+one more hour to 'avail' then it would be worth another $4640.
 
+Displaying Make.rc gives us the dollar impact on the total profit for each 
+unit of bands, coils and plate respectively.
+
+   
